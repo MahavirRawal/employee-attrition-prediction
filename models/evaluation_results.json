@@ -1,0 +1,821 @@
+{
+    "dataset_info": {
+        "total_records": 1473,
+        "clean_records": 1473,
+        "num_features": 32,
+        "attrition_counts": {
+            "Stayed (0)": 1236,
+            "Attrited (1)": 237
+        },
+        "attrition_rate_pct": 16.08961303462322
+    },
+    "models_evaluated": [
+        "Logistic Regression",
+        "Decision Tree",
+        "Random Forest"
+    ],
+    "selected_model": "Logistic Regression",
+    "selection_rationale": "Logistic Regression was selected as the final model because it achieved the highest combined ROC-AUC (0.8313) and F1-score (0.4974) across 5-fold cross-validation, demonstrating strong capability in identifying minority-class attrition with balanced precision and recall.",
+    "cross_validation_results": {
+        "Logistic Regression": {
+            "accuracy": {
+                "mean": 0.7651239478842384,
+                "std": 0.03974885492415169
+            },
+            "precision": {
+                "mean": 0.3816977071621611,
+                "std": 0.056653914091061006
+            },
+            "recall": {
+                "mean": 0.7168439716312056,
+                "std": 0.08040266977142564
+            },
+            "f1": {
+                "mean": 0.497442511104881,
+                "std": 0.0659632443260422
+            },
+            "roc_auc": {
+                "mean": 0.8312809884248132,
+                "std": 0.044732118568316444
+            },
+            "average_precision": {
+                "mean": 0.6143972687379406,
+                "std": 0.08680030416883813
+            }
+        },
+        "Decision Tree": {
+            "accuracy": {
+                "mean": 0.7257050616856913,
+                "std": 0.02788534374650954
+            },
+            "precision": {
+                "mean": 0.2976574582180323,
+                "std": 0.027920493267110727
+            },
+            "recall": {
+                "mean": 0.5106382978723405,
+                "std": 0.06179783886745307
+            },
+            "f1": {
+                "mean": 0.3744826098679987,
+                "std": 0.031820531220972476
+            },
+            "roc_auc": {
+                "mean": 0.618083867540664,
+                "std": 0.04268669701116055
+            },
+            "average_precision": {
+                "mean": 0.3008983248076745,
+                "std": 0.03830319663107712
+            }
+        },
+        "Random Forest": {
+            "accuracy": {
+                "mean": 0.856075175833045,
+                "std": 0.014654880628221269
+            },
+            "precision": {
+                "mean": 0.5871868871868873,
+                "std": 0.0755620660523648
+            },
+            "recall": {
+                "mean": 0.3713652482269504,
+                "std": 0.04410440945818511
+            },
+            "f1": {
+                "mean": 0.4536019825176452,
+                "std": 0.04983555010730292
+            },
+            "roc_auc": {
+                "mean": 0.799302045502331,
+                "std": 0.03793860432316902
+            },
+            "average_precision": {
+                "mean": 0.5168368726800037,
+                "std": 0.07394731529163771
+            }
+        }
+    },
+    "test_set_results": {
+        "Logistic Regression": {
+            "accuracy": 0.7694915254237288,
+            "precision": 0.39805825242718446,
+            "recall": 0.8723404255319149,
+            "f1": 0.5466666666666666,
+            "roc_auc": 0.8912148249828414,
+            "average_precision": 0.7126768438775585,
+            "confusion_matrix": [
+                [
+                    186,
+                    62
+                ],
+                [
+                    6,
+                    41
+                ]
+            ],
+            "classification_report": {
+                "0": {
+                    "precision": 0.96875,
+                    "recall": 0.75,
+                    "f1-score": 0.8454545454545455,
+                    "support": 248.0
+                },
+                "1": {
+                    "precision": 0.39805825242718446,
+                    "recall": 0.8723404255319149,
+                    "f1-score": 0.5466666666666666,
+                    "support": 47.0
+                },
+                "accuracy": 0.7694915254237288,
+                "macro avg": {
+                    "precision": 0.6834041262135923,
+                    "recall": 0.8111702127659575,
+                    "f1-score": 0.696060606060606,
+                    "support": 295.0
+                },
+                "weighted avg": {
+                    "precision": 0.8778262300477209,
+                    "recall": 0.7694915254237288,
+                    "f1-score": 0.7978510529019004,
+                    "support": 295.0
+                }
+            }
+        },
+        "Decision Tree": {
+            "accuracy": 0.7966101694915254,
+            "precision": 0.3968253968253968,
+            "recall": 0.5319148936170213,
+            "f1": 0.45454545454545453,
+            "roc_auc": 0.6347803706245709,
+            "average_precision": 0.3153689514345071,
+            "confusion_matrix": [
+                [
+                    210,
+                    38
+                ],
+                [
+                    22,
+                    25
+                ]
+            ],
+            "classification_report": {
+                "0": {
+                    "precision": 0.9051724137931034,
+                    "recall": 0.8467741935483871,
+                    "f1-score": 0.875,
+                    "support": 248.0
+                },
+                "1": {
+                    "precision": 0.3968253968253968,
+                    "recall": 0.5319148936170213,
+                    "f1-score": 0.45454545454545453,
+                    "support": 47.0
+                },
+                "accuracy": 0.7966101694915254,
+                "macro avg": {
+                    "precision": 0.6509989053092501,
+                    "recall": 0.6893445435827041,
+                    "f1-score": 0.6647727272727273,
+                    "support": 295.0
+                },
+                "weighted avg": {
+                    "precision": 0.8241815331236721,
+                    "recall": 0.7966101694915254,
+                    "f1-score": 0.8080123266563944,
+                    "support": 295.0
+                }
+            }
+        },
+        "Random Forest": {
+            "accuracy": 0.8610169491525423,
+            "precision": 0.5833333333333334,
+            "recall": 0.44680851063829785,
+            "f1": 0.5060240963855421,
+            "roc_auc": 0.8113846945778997,
+            "average_precision": 0.5759657449564767,
+            "confusion_matrix": [
+                [
+                    233,
+                    15
+                ],
+                [
+                    26,
+                    21
+                ]
+            ],
+            "classification_report": {
+                "0": {
+                    "precision": 0.8996138996138996,
+                    "recall": 0.9395161290322581,
+                    "f1-score": 0.9191321499013807,
+                    "support": 248.0
+                },
+                "1": {
+                    "precision": 0.5833333333333334,
+                    "recall": 0.44680851063829785,
+                    "f1-score": 0.5060240963855421,
+                    "support": 47.0
+                },
+                "accuracy": 0.8610169491525423,
+                "macro avg": {
+                    "precision": 0.7414736164736164,
+                    "recall": 0.693162319835278,
+                    "f1-score": 0.7125781231434614,
+                    "support": 295.0
+                },
+                "weighted avg": {
+                    "precision": 0.8492234365115721,
+                    "recall": 0.8610169491525423,
+                    "f1-score": 0.8533149345954675,
+                    "support": 295.0
+                }
+            }
+        }
+    },
+    "transformed_feature_names": [
+        "Age",
+        "DailyRate",
+        "DistanceFromHome",
+        "Education",
+        "EnvironmentSatisfaction",
+        "HourlyRate",
+        "JobInvolvement",
+        "JobLevel",
+        "JobSatisfaction",
+        "MonthlyIncome",
+        "MonthlyRate",
+        "NumCompaniesWorked",
+        "PercentSalaryHike",
+        "PerformanceRating",
+        "RelationshipSatisfaction",
+        "StockOptionLevel",
+        "TotalWorkingYears",
+        "TrainingTimesLastYear",
+        "WorkLifeBalance",
+        "YearsAtCompany",
+        "YearsInCurrentRole",
+        "YearsSinceLastPromotion",
+        "YearsWithCurrManager",
+        "AgeGroup_18-25",
+        "AgeGroup_26-35",
+        "AgeGroup_36-45",
+        "AgeGroup_46-55",
+        "AgeGroup_55+",
+        "BusinessTravel_Non-Travel",
+        "BusinessTravel_TravelRarely",
+        "BusinessTravel_Travel_Frequently",
+        "BusinessTravel_Travel_Rarely",
+        "Department_Human Resources",
+        "Department_Research & Development",
+        "Department_Sales",
+        "EducationField_Human Resources",
+        "EducationField_Life Sciences",
+        "EducationField_Marketing",
+        "EducationField_Medical",
+        "EducationField_Other",
+        "EducationField_Technical Degree",
+        "Gender_Female",
+        "Gender_Male",
+        "JobRole_Healthcare Representative",
+        "JobRole_Human Resources",
+        "JobRole_Laboratory Technician",
+        "JobRole_Manager",
+        "JobRole_Manufacturing Director",
+        "JobRole_Research Director",
+        "JobRole_Research Scientist",
+        "JobRole_Sales Executive",
+        "JobRole_Sales Representative",
+        "MaritalStatus_Divorced",
+        "MaritalStatus_Married",
+        "MaritalStatus_Single",
+        "SalarySlab_10k-15k",
+        "SalarySlab_15k+",
+        "SalarySlab_5k-10k",
+        "SalarySlab_Upto 5k",
+        "OverTime_No",
+        "OverTime_Yes"
+    ],
+    "random_forest_top_features": [
+        {
+            "feature": "MonthlyIncome",
+            "importance": 0.07100394196468926
+        },
+        {
+            "feature": "DailyRate",
+            "importance": 0.04448621219527718
+        },
+        {
+            "feature": "TotalWorkingYears",
+            "importance": 0.04425697852581
+        },
+        {
+            "feature": "Age",
+            "importance": 0.043780332350746624
+        },
+        {
+            "feature": "MonthlyRate",
+            "importance": 0.04265673536616335
+        },
+        {
+            "feature": "HourlyRate",
+            "importance": 0.041870199690258694
+        },
+        {
+            "feature": "OverTime_No",
+            "importance": 0.04185909025496546
+        },
+        {
+            "feature": "YearsAtCompany",
+            "importance": 0.03896354564485229
+        },
+        {
+            "feature": "DistanceFromHome",
+            "importance": 0.0389387409498109
+        },
+        {
+            "feature": "OverTime_Yes",
+            "importance": 0.036473765696161314
+        },
+        {
+            "feature": "StockOptionLevel",
+            "importance": 0.03302324942281987
+        },
+        {
+            "feature": "YearsWithCurrManager",
+            "importance": 0.03211901705385438
+        },
+        {
+            "feature": "YearsInCurrentRole",
+            "importance": 0.031218036348621084
+        },
+        {
+            "feature": "PercentSalaryHike",
+            "importance": 0.029352641182936505
+        },
+        {
+            "feature": "NumCompaniesWorked",
+            "importance": 0.027644097467667356
+        }
+    ],
+    "logistic_regression_coefficients": [
+        {
+            "feature": "BusinessTravel_Travel_Frequently",
+            "coefficient": 0.9955719514602657
+        },
+        {
+            "feature": "JobRole_Laboratory Technician",
+            "coefficient": 0.9431078094706145
+        },
+        {
+            "feature": "JobRole_Sales Representative",
+            "coefficient": 0.8834283320033486
+        },
+        {
+            "feature": "AgeGroup_55+",
+            "coefficient": 0.8630273525433926
+        },
+        {
+            "feature": "OverTime_Yes",
+            "coefficient": 0.8543124736967479
+        },
+        {
+            "feature": "AgeGroup_46-55",
+            "coefficient": 0.7300941878510229
+        },
+        {
+            "feature": "YearsAtCompany",
+            "coefficient": 0.629885704796823
+        },
+        {
+            "feature": "EducationField_Technical Degree",
+            "coefficient": 0.6297895436733072
+        },
+        {
+            "feature": "MaritalStatus_Single",
+            "coefficient": 0.57835567946176
+        },
+        {
+            "feature": "Department_Sales",
+            "coefficient": 0.5589661084576529
+        },
+        {
+            "feature": "EducationField_Human Resources",
+            "coefficient": 0.5104456059420667
+        },
+        {
+            "feature": "SalarySlab_10k-15k",
+            "coefficient": 0.4865869933372998
+        },
+        {
+            "feature": "YearsSinceLastPromotion",
+            "coefficient": 0.48337355413832184
+        },
+        {
+            "feature": "NumCompaniesWorked",
+            "coefficient": 0.385919261685203
+        },
+        {
+            "feature": "JobRole_Human Resources",
+            "coefficient": 0.318810334492254
+        },
+        {
+            "feature": "DistanceFromHome",
+            "coefficient": 0.3133605130931434
+        },
+        {
+            "feature": "SalarySlab_15k+",
+            "coefficient": 0.26374333919527493
+        },
+        {
+            "feature": "BusinessTravel_Travel_Rarely",
+            "coefficient": 0.2352401822454871
+        },
+        {
+            "feature": "Gender_Male",
+            "coefficient": 0.229464923533166
+        },
+        {
+            "feature": "JobRole_Research Scientist",
+            "coefficient": 0.14506136986665713
+        },
+        {
+            "feature": "JobLevel",
+            "coefficient": 0.12985577420855438
+        },
+        {
+            "feature": "PerformanceRating",
+            "coefficient": 0.11876545461184201
+        },
+        {
+            "feature": "Education",
+            "coefficient": 0.06890304312890706
+        },
+        {
+            "feature": "MonthlyRate",
+            "coefficient": 0.05666613621467316
+        },
+        {
+            "feature": "HourlyRate",
+            "coefficient": 0.04262654199150865
+        },
+        {
+            "feature": "EducationField_Marketing",
+            "coefficient": -0.07194132111728781
+        },
+        {
+            "feature": "DailyRate",
+            "coefficient": -0.08513037865643838
+        },
+        {
+            "feature": "MaritalStatus_Married",
+            "coefficient": -0.08694143419496196
+        },
+        {
+            "feature": "JobRole_Sales Executive",
+            "coefficient": -0.12724535419434532
+        },
+        {
+            "feature": "JobRole_Manufacturing Director",
+            "coefficient": -0.12788437088274593
+        },
+        {
+            "feature": "StockOptionLevel",
+            "coefficient": -0.1412158146446065
+        },
+        {
+            "feature": "WorkLifeBalance",
+            "coefficient": -0.1569485459886292
+        },
+        {
+            "feature": "PercentSalaryHike",
+            "coefficient": -0.20511304875642167
+        },
+        {
+            "feature": "RelationshipSatisfaction",
+            "coefficient": -0.21917658070001297
+        },
+        {
+            "feature": "JobRole_Healthcare Representative",
+            "coefficient": -0.23332759138792156
+        },
+        {
+            "feature": "MonthlyIncome",
+            "coefficient": -0.23642488350116392
+        },
+        {
+            "feature": "Department_Research & Development",
+            "coefficient": -0.2380411437569415
+        },
+        {
+            "feature": "EducationField_Medical",
+            "coefficient": -0.26022853194785583
+        },
+        {
+            "feature": "Gender_Female",
+            "coefficient": -0.2605136645589456
+        },
+        {
+            "feature": "JobInvolvement",
+            "coefficient": -0.26352481396881156
+        },
+        {
+            "feature": "EducationField_Other",
+            "coefficient": -0.2704011638637763
+        },
+        {
+            "feature": "TrainingTimesLastYear",
+            "coefficient": -0.2863138611030693
+        },
+        {
+            "feature": "SalarySlab_Upto 5k",
+            "coefficient": -0.2947730951821697
+        },
+        {
+            "feature": "Age",
+            "coefficient": -0.3289443512835023
+        },
+        {
+            "feature": "JobSatisfaction",
+            "coefficient": -0.3310917554497229
+        },
+        {
+            "feature": "Department_Human Resources",
+            "coefficient": -0.35197370572648806
+        },
+        {
+            "feature": "YearsInCurrentRole",
+            "coefficient": -0.43412771852985316
+        },
+        {
+            "feature": "YearsWithCurrManager",
+            "coefficient": -0.44591307044678186
+        },
+        {
+            "feature": "EnvironmentSatisfaction",
+            "coefficient": -0.4612887324953021
+        },
+        {
+            "feature": "SalarySlab_5k-10k",
+            "coefficient": -0.4866059783761813
+        },
+        {
+            "feature": "AgeGroup_26-35",
+            "coefficient": -0.49157132251499513
+        },
+        {
+            "feature": "MaritalStatus_Divorced",
+            "coefficient": -0.5224629862925723
+        },
+        {
+            "feature": "AgeGroup_18-25",
+            "coefficient": -0.5270229079698505
+        },
+        {
+            "feature": "BusinessTravel_TravelRarely",
+            "coefficient": -0.5685477862345976
+        },
+        {
+            "feature": "EducationField_Life Sciences",
+            "coefficient": -0.5687128737122298
+        },
+        {
+            "feature": "AgeGroup_36-45",
+            "coefficient": -0.6055760509353498
+        },
+        {
+            "feature": "JobRole_Manager",
+            "coefficient": -0.6415380927606291
+        },
+        {
+            "feature": "TotalWorkingYears",
+            "coefficient": -0.6443020864035018
+        },
+        {
+            "feature": "BusinessTravel_Non-Travel",
+            "coefficient": -0.6933130884969325
+        },
+        {
+            "feature": "OverTime_No",
+            "coefficient": -0.8853612147225197
+        },
+        {
+            "feature": "JobRole_Research Director",
+            "coefficient": -1.1914611776330066
+        }
+    ],
+    "features_schema": {
+        "numerical": [
+            "Age",
+            "DailyRate",
+            "DistanceFromHome",
+            "Education",
+            "EnvironmentSatisfaction",
+            "HourlyRate",
+            "JobInvolvement",
+            "JobLevel",
+            "JobSatisfaction",
+            "MonthlyIncome",
+            "MonthlyRate",
+            "NumCompaniesWorked",
+            "PercentSalaryHike",
+            "PerformanceRating",
+            "RelationshipSatisfaction",
+            "StockOptionLevel",
+            "TotalWorkingYears",
+            "TrainingTimesLastYear",
+            "WorkLifeBalance",
+            "YearsAtCompany",
+            "YearsInCurrentRole",
+            "YearsSinceLastPromotion",
+            "YearsWithCurrManager"
+        ],
+        "categorical": [
+            "AgeGroup",
+            "BusinessTravel",
+            "Department",
+            "EducationField",
+            "Gender",
+            "JobRole",
+            "MaritalStatus",
+            "SalarySlab",
+            "OverTime"
+        ],
+        "categorical_options": {
+            "AgeGroup": [
+                "18-25",
+                "26-35",
+                "36-45",
+                "46-55",
+                "55+"
+            ],
+            "BusinessTravel": [
+                "Travel_Rarely",
+                "Travel_Frequently",
+                "Non-Travel",
+                "TravelRarely"
+            ],
+            "Department": [
+                "Research & Development",
+                "Sales",
+                "Human Resources"
+            ],
+            "EducationField": [
+                "Life Sciences",
+                "Medical",
+                "Marketing",
+                "Technical Degree",
+                "Other",
+                "Human Resources"
+            ],
+            "Gender": [
+                "Male",
+                "Female"
+            ],
+            "JobRole": [
+                "Laboratory Technician",
+                "Sales Representative",
+                "Research Scientist",
+                "Human Resources",
+                "Manufacturing Director",
+                "Sales Executive",
+                "Healthcare Representative",
+                "Research Director",
+                "Manager"
+            ],
+            "MaritalStatus": [
+                "Single",
+                "Divorced",
+                "Married"
+            ],
+            "SalarySlab": [
+                "Upto 5k",
+                "5k-10k",
+                "10k-15k",
+                "15k+"
+            ],
+            "OverTime": [
+                "No",
+                "Yes"
+            ]
+        },
+        "numerical_ranges": {
+            "Age": {
+                "min": 18.0,
+                "max": 60.0,
+                "median": 36.0
+            },
+            "DailyRate": {
+                "min": 102.0,
+                "max": 1499.0,
+                "median": 802.0
+            },
+            "DistanceFromHome": {
+                "min": 1.0,
+                "max": 29.0,
+                "median": 7.0
+            },
+            "Education": {
+                "min": 1.0,
+                "max": 5.0,
+                "median": 3.0
+            },
+            "EnvironmentSatisfaction": {
+                "min": 1.0,
+                "max": 4.0,
+                "median": 3.0
+            },
+            "HourlyRate": {
+                "min": 30.0,
+                "max": 100.0,
+                "median": 66.0
+            },
+            "JobInvolvement": {
+                "min": 1.0,
+                "max": 4.0,
+                "median": 3.0
+            },
+            "JobLevel": {
+                "min": 1.0,
+                "max": 5.0,
+                "median": 2.0
+            },
+            "JobSatisfaction": {
+                "min": 1.0,
+                "max": 4.0,
+                "median": 3.0
+            },
+            "MonthlyIncome": {
+                "min": 1009.0,
+                "max": 19999.0,
+                "median": 4908.0
+            },
+            "MonthlyRate": {
+                "min": 2094.0,
+                "max": 26999.0,
+                "median": 14242.0
+            },
+            "NumCompaniesWorked": {
+                "min": 0.0,
+                "max": 9.0,
+                "median": 2.0
+            },
+            "PercentSalaryHike": {
+                "min": 11.0,
+                "max": 25.0,
+                "median": 14.0
+            },
+            "PerformanceRating": {
+                "min": 3.0,
+                "max": 4.0,
+                "median": 3.0
+            },
+            "RelationshipSatisfaction": {
+                "min": 1.0,
+                "max": 4.0,
+                "median": 3.0
+            },
+            "StockOptionLevel": {
+                "min": 0.0,
+                "max": 3.0,
+                "median": 1.0
+            },
+            "TotalWorkingYears": {
+                "min": 0.0,
+                "max": 40.0,
+                "median": 10.0
+            },
+            "TrainingTimesLastYear": {
+                "min": 0.0,
+                "max": 6.0,
+                "median": 3.0
+            },
+            "WorkLifeBalance": {
+                "min": 1.0,
+                "max": 4.0,
+                "median": 3.0
+            },
+            "YearsAtCompany": {
+                "min": 0.0,
+                "max": 40.0,
+                "median": 5.0
+            },
+            "YearsInCurrentRole": {
+                "min": 0.0,
+                "max": 18.0,
+                "median": 3.0
+            },
+            "YearsSinceLastPromotion": {
+                "min": 0.0,
+                "max": 15.0,
+                "median": 1.0
+            },
+            "YearsWithCurrManager": {
+                "min": 0.0,
+                "max": 17.0,
+                "median": 3.0
+            }
+        }
+    },
+    "random_state": 42
+}
