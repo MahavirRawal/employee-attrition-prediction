@@ -56,12 +56,13 @@ def load_and_clean_dataset(filepath=DATA_PATH):
     # Map target column
     y = df["Attrition"].astype(str).str.strip().str.lower().apply(lambda x: 1 if x == "yes" else 0)
     
-    # Identify columns to drop: target, IDs, constants
+    # Identify columns to drop: target, sensitive demographics (Gender, MaritalStatus), IDs, constants
     drop_cols = ["Attrition"]
+    sensitive_cols = [c for c in ["Gender", "MaritalStatus"] if c in df.columns]
     id_cols = [c for c in ["EmpID", "EmployeeNumber"] if c in df.columns]
     constant_cols = [c for c in df.columns if c not in drop_cols and df[c].nunique(dropna=False) <= 1]
     
-    exclude_cols = drop_cols + id_cols + constant_cols
+    exclude_cols = drop_cols + sensitive_cols + id_cols + constant_cols
     X = df.drop(columns=exclude_cols)
     
     print(f"Features count: {X.shape[1]}")

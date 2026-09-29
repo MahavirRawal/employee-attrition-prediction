@@ -323,8 +323,6 @@ def main():
             with col1:
                 st.markdown("##### Personal & Financial")
                 age = st.number_input("Age", min_value=18, max_value=65, value=35)
-                gender = st.selectbox("Gender", options=cat_opts.get("Gender", ["Male", "Female"]))
-                marital = st.selectbox("Marital Status", options=cat_opts.get("MaritalStatus", ["Single", "Married", "Divorced"]))
                 monthly_income = st.number_input("Monthly Income ($)", min_value=1000, max_value=25000, value=5000, step=500)
                 percent_hike = st.slider("Percent Salary Hike (%)", min_value=10, max_value=30, value=15)
                 stock_option = st.selectbox("Stock Option Level", options=[0, 1, 2, 3], index=1)
@@ -400,9 +398,7 @@ def main():
                 "BusinessTravel": business_travel,
                 "Department": department,
                 "EducationField": education_field,
-                "Gender": gender,
                 "JobRole": job_role,
-                "MaritalStatus": marital,
                 "SalarySlab": derive_salary_slab(monthly_income),
                 "OverTime": overtime
             }
@@ -446,8 +442,9 @@ def main():
                     preproc = pipeline.named_steps["preprocessor"]
                     clf = pipeline.named_steps["classifier"]
                     
-                    # Background sample for explainer
-                    bg_df = df_raw.drop_duplicates().drop(columns=[c for c in ["Attrition", "EmpID", "EmployeeNumber", "EmployeeCount", "Over18", "StandardHours"] if c in df_raw.columns]).head(50)
+                    # Background sample for explainer matching model feature schema
+                    expected_features = schema.get("numerical", []) + schema.get("categorical", [])
+                    bg_df = df_raw.drop_duplicates()[expected_features].head(50)
                     X_bg_trans = preproc.transform(bg_df)
                     X_input_trans = preproc.transform(input_df)
                     
@@ -484,8 +481,10 @@ def main():
 
         st.markdown(
             "<div class='disclaimer-box'>"
-            "⚠️ <b>Responsible-Use Disclaimer:</b> This is an educational decision-support model. "
-            "Predictions are probability estimates based on historical statistical associations, not guarantees. "
+            "⚠️ <b>Responsible-Use & Fairness Disclaimer:</b> This application is an educational decision-support tool. "
+            "Gender and MaritalStatus have been explicitly removed from model inputs. "
+            "However, excluding these attributes does not guarantee complete absence of bias, as proxy relationships may exist in remaining features. "
+            "Model predictions are statistical risk estimates based on historical patterns, not guarantees or definitive outcomes. "
             "Do NOT use this system as the sole basis for hiring, firing, promotion, compensation, or disciplinary actions."
             "</div>",
             unsafe_allow_html=True
@@ -615,10 +614,11 @@ def main():
         The **Intelligent Employee Attrition Prediction System** is a college-level machine learning decision-support application built using Python, Scikit-learn, and Streamlit.
         
         ### Architecture & Methodology
-        1. **Data Preprocessing & Pipeline:** Uses Scikit-learn `ColumnTransformer` inside a leak-free `Pipeline` to impute missing values, scale numerical features, and one-hot encode categorical features.
+        1. **Data Preprocessing & Pipeline:** Uses Scikit-learn `ColumnTransformer` inside a leak-free `Pipeline` to impute missing values, scale numerical features, and one-hot encode categorical features across 30 predictor features (excluding sensitive demographic attributes Gender and MaritalStatus).
         2. **Model Training & Cross-Validation:** Compares Logistic Regression, Decision Tree Classifier, and Random Forest Classifier using 5-Fold Stratified Cross-Validation.
         3. **Evaluation Metrics:** Evaluated using Accuracy, Precision, Recall, F1-Score, ROC-AUC, and Average Precision.
-        4. **Interpretability:** Integrates SHAP force/bar plots and Logistic Regression coefficients for transparent predictions.
+        4. **Interpretability:** Integrates SHAP bar plots and Logistic Regression coefficients for transparent predictions.
+        5. **Responsible AI & Fairness:** Sensitive attributes (`Gender` and `MaritalStatus`) are explicitly excluded from model inputs. Note that proxy associations may still exist in workplace variables; outputs are for decision support only.
         
         ### Deployment Guide (Streamlit Community Cloud)
         1. Commit source code (`app.py`, `train_model.py`, `requirements.txt`, `models/`, `data/`) to GitHub.
