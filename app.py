@@ -123,11 +123,24 @@ def load_hr_data():
     return df
 
 # Cache model pipeline loading
+# @st.cache_resource
+# def load_trained_model():
+#     if not os.path.exists(MODEL_PATH):
+#         return None
+#     return joblib.load(MODEL_PATH)
 @st.cache_resource
 def load_trained_model():
     if not os.path.exists(MODEL_PATH):
         return None
-    return joblib.load(MODEL_PATH)
+
+    model = joblib.load(MODEL_PATH)
+
+    print("Loaded model path:", os.path.abspath(MODEL_PATH))
+    print("Model feature count:", len(model.feature_names_in_))
+    print("Gender expected:", "Gender" in model.feature_names_in_)
+    print("MaritalStatus expected:", "MaritalStatus" in model.feature_names_in_)
+
+    return model
 
 # Cache evaluation artifacts
 @st.cache_data
@@ -403,78 +416,261 @@ def main():
                 "OverTime": overtime
             }
 
-            input_df = pd.DataFrame([input_dict])
+            # input_df = pd.DataFrame([input_dict])
             
+            # try:
+            #     pred_class = pipeline.predict(input_df)[0]
+            #     pred_prob = pipeline.predict_proba(input_df)[0][1]
+                
+            #     st.markdown("<br>", unsafe_allow_html=True)
+            #     st.markdown("<div class='section-header'>📌 Prediction Output</div>", unsafe_allow_html=True)
+                
+            #     res_col1, res_col2 = st.columns([1, 2])
+            #     with res_col1:
+            #         if pred_class == 1 or pred_prob > 0.5:
+            #             st.markdown("<div class='badge-high'>🚨 HIGH ATTRITION RISK</div>", unsafe_allow_html=True)
+            #         else:
+            #             st.markdown("<div class='badge-low'>✅ LOW ATTRITION RISK</div>", unsafe_allow_html=True)
+                        
+            #         st.metric("Estimated Attrition Probability", f"{pred_prob*100:.1f}%")
+            #         st.progress(float(pred_prob))
+
+            #     with res_col2:
+            #         if pred_class == 1 or pred_prob > 0.5:
+            #             st.error(
+            #                 f"**Recommendation:** The model estimates a **{pred_prob*100:.1f}% risk** that this employee may leave. "
+            #                 "Key risk factors typically include OverTime demands, lower Job/Environment satisfaction, or below-average tenure under the current manager. "
+            #                 "HR intervention and stay interviews are recommended."
+            #             )
+            #         else:
+            #             st.success(
+            #                 f"**Recommendation:** The model estimates a **{pred_prob*100:.1f}% risk** of attrition. "
+            #                 "The employee's profile aligns with historical retention indicators. "
+            #                 "Continued engagement and career development planning are suggested."
+            #             )
+
+            #     # SHAP Feature Contribution Explanation
+            #     st.markdown("<div class='section-header'>🔍 Individual Prediction Explanation (SHAP)</div>", unsafe_allow_html=True)
+            #     try:
+            #         preproc = pipeline.named_steps["preprocessor"]
+            #         clf = pipeline.named_steps["classifier"]
+                    
+            #         # Background sample for explainer matching model feature schema
+            #         expected_features = schema.get("numerical", []) + schema.get("categorical", [])
+            #         bg_df = df_raw.drop_duplicates()[expected_features].head(50)
+            #         X_bg_trans = preproc.transform(bg_df)
+            #         X_input_trans = preproc.transform(input_df)
+                    
+            #         feature_names = eval_artifacts.get("transformed_feature_names", [])
+                    
+            #         if hasattr(clf, "coef_"):
+            #             explainer = shap.LinearExplainer(clf, X_bg_trans)
+            #             shap_values = explainer(X_input_trans)
+            #         else:
+            #             explainer = shap.TreeExplainer(clf)
+            #             shap_values = explainer(X_input_trans)
+
+            #         sv = shap_values.values[0]
+                    
+            #         # Top 10 absolute impact features
+            #         top_idx = np.argsort(np.abs(sv))[-10:]
+            #         top_sv = sv[top_idx]
+            #         top_names = [feature_names[i].replace("num__", "").replace("cat__", "") for i in top_idx]
+                    
+            #         fig, ax = plt.subplots(figsize=(9, 4.5))
+            #         colors_shap = ["#dc2626" if v > 0 else "#16a34a" for v in top_sv]
+            #         ax.barh(top_names, top_sv, color=colors_shap, alpha=0.85)
+            #         ax.axvline(0, color="black", linestyle="--", linewidth=1)
+            #         ax.set_xlabel("SHAP Impact Score (Red = Increases Attrition Risk, Green = Decreases Risk)")
+            #         ax.set_title("Top 10 Feature Contributions for This Specific Employee", fontsize=12, fontweight="bold")
+            #         plt.tight_layout()
+            #         st.pyplot(fig)
+            #         plt.close()
+            #     except Exception as e:
+            #         st.info(f"SHAP explanation generated using standard linear feature importance. ({str(e)})")
+
+            # except Exception as ex:
+            #     st.error(f"Error making prediction: {str(ex)}")
+            
+            # Create the prediction input inside the submit-button block
+            input_df = pd.DataFrame([input_dict])
+
             try:
+                # Validate input columns against the trained model
+                expected_features = list(pipeline.feature_names_in_)
+
+                missing_features = sorted(
+                    set(expected_features) - set(input_df.columns)
+                )
+                unexpected_features = sorted(
+                    set(input_df.columns) - set(expected_features)
+                )
+
+                if missing_features or unexpected_features:
+                    raise ValueError(
+                        f"Missing features: {missing_features}; "
+                        f"Unexpected features: {unexpected_features}"
+                    )
+
+                # Match the exact feature order used during training
+                input_df = input_df[expected_features]
+
+                # Generate prediction
                 pred_class = pipeline.predict(input_df)[0]
                 pred_prob = pipeline.predict_proba(input_df)[0][1]
-                
+
                 st.markdown("<br>", unsafe_allow_html=True)
-                st.markdown("<div class='section-header'>📌 Prediction Output</div>", unsafe_allow_html=True)
-                
+                st.markdown(
+                    "<div class='section-header'>📌 Prediction Output</div>",
+                    unsafe_allow_html=True
+                )
+
                 res_col1, res_col2 = st.columns([1, 2])
+
                 with res_col1:
                     if pred_class == 1 or pred_prob > 0.5:
-                        st.markdown("<div class='badge-high'>🚨 HIGH ATTRITION RISK</div>", unsafe_allow_html=True)
+                        st.markdown(
+                            "<div class='badge-high'>"
+                            "🚨 HIGH ATTRITION RISK</div>",
+                            unsafe_allow_html=True
+                        )
                     else:
-                        st.markdown("<div class='badge-low'>✅ LOW ATTRITION RISK</div>", unsafe_allow_html=True)
-                        
-                    st.metric("Estimated Attrition Probability", f"{pred_prob*100:.1f}%")
+                        st.markdown(
+                            "<div class='badge-low'>"
+                            "✅ LOW ATTRITION RISK</div>",
+                            unsafe_allow_html=True
+                        )
+
+                    st.metric(
+                        "Estimated Attrition Probability",
+                        f"{pred_prob * 100:.1f}%"
+                    )
                     st.progress(float(pred_prob))
 
                 with res_col2:
                     if pred_class == 1 or pred_prob > 0.5:
                         st.error(
-                            f"**Recommendation:** The model estimates a **{pred_prob*100:.1f}% risk** that this employee may leave. "
-                            "Key risk factors typically include OverTime demands, lower Job/Environment satisfaction, or below-average tenure under the current manager. "
-                            "HR intervention and stay interviews are recommended."
+                            f"**Estimated attrition probability: "
+                            f"{pred_prob * 100:.1f}%.** "
+                            "Consider a supportive, confidential "
+                            "conversation about workload, job satisfaction, "
+                            "career development, and employee needs. "
+                            "This estimate should not be used as the sole "
+                            "basis for an employment decision."
                         )
                     else:
                         st.success(
-                            f"**Recommendation:** The model estimates a **{pred_prob*100:.1f}% risk** of attrition. "
-                            "The employee's profile aligns with historical retention indicators. "
-                            "Continued engagement and career development planning are suggested."
+                            f"**Estimated attrition probability: "
+                            f"{pred_prob * 100:.1f}%.** "
+                            "Continue regular engagement and career "
+                            "development discussions. A low estimate "
+                            "does not guarantee that an employee will stay."
                         )
 
-                # SHAP Feature Contribution Explanation
-                st.markdown("<div class='section-header'>🔍 Individual Prediction Explanation (SHAP)</div>", unsafe_allow_html=True)
+                # SHAP explanation for this individual prediction
+                st.markdown(
+                    "<div class='section-header'>"
+                    "🔍 Individual Prediction Explanation (SHAP)"
+                    "</div>",
+                    unsafe_allow_html=True
+                )
+
                 try:
                     preproc = pipeline.named_steps["preprocessor"]
                     clf = pipeline.named_steps["classifier"]
-                    
-                    # Background sample for explainer matching model feature schema
-                    expected_features = schema.get("numerical", []) + schema.get("categorical", [])
-                    bg_df = df_raw.drop_duplicates()[expected_features].head(50)
+
+                    background_features = (
+                        schema.get("numerical", [])
+                        + schema.get("categorical", [])
+                    )
+
+                    bg_df = (
+                        df_raw.drop_duplicates()[background_features]
+                        .head(50)
+                    )
+
                     X_bg_trans = preproc.transform(bg_df)
                     X_input_trans = preproc.transform(input_df)
-                    
-                    feature_names = eval_artifacts.get("transformed_feature_names", [])
-                    
+
+                    feature_names = eval_artifacts.get(
+                        "transformed_feature_names", []
+                    )
+
                     if hasattr(clf, "coef_"):
-                        explainer = shap.LinearExplainer(clf, X_bg_trans)
+                        explainer = shap.LinearExplainer(
+                            clf, X_bg_trans
+                        )
                         shap_values = explainer(X_input_trans)
                     else:
                         explainer = shap.TreeExplainer(clf)
                         shap_values = explainer(X_input_trans)
 
-                    sv = shap_values.values[0]
-                    
-                    # Top 10 absolute impact features
+                    sv = np.asarray(shap_values.values)
+
+                    # Handle binary-class SHAP output if it has
+                    # an additional class dimension.
+                    if sv.ndim == 3:
+                        sv = sv[0, :, -1]
+                    else:
+                        sv = sv[0]
+
+                    if len(feature_names) != len(sv):
+                        raise ValueError(
+                            "SHAP feature names do not match "
+                            "the transformed feature count."
+                        )
+
                     top_idx = np.argsort(np.abs(sv))[-10:]
                     top_sv = sv[top_idx]
-                    top_names = [feature_names[i].replace("num__", "").replace("cat__", "") for i in top_idx]
-                    
+
+                    top_names = [
+                        feature_names[i]
+                        .replace("num__", "")
+                        .replace("cat__", "")
+                        for i in top_idx
+                    ]
+
                     fig, ax = plt.subplots(figsize=(9, 4.5))
-                    colors_shap = ["#dc2626" if v > 0 else "#16a34a" for v in top_sv]
-                    ax.barh(top_names, top_sv, color=colors_shap, alpha=0.85)
-                    ax.axvline(0, color="black", linestyle="--", linewidth=1)
-                    ax.set_xlabel("SHAP Impact Score (Red = Increases Attrition Risk, Green = Decreases Risk)")
-                    ax.set_title("Top 10 Feature Contributions for This Specific Employee", fontsize=12, fontweight="bold")
+
+                    colors_shap = [
+                        "#dc2626" if value > 0 else "#16a34a"
+                        for value in top_sv
+                    ]
+
+                    ax.barh(
+                        top_names,
+                        top_sv,
+                        color=colors_shap,
+                        alpha=0.85
+                    )
+                    ax.axvline(
+                        0, color="black",
+                        linestyle="--", linewidth=1
+                    )
+                    ax.set_xlabel(
+                        "SHAP impact (positive = increases model output; "
+                        "negative = decreases model output)"
+                    )
+                    ax.set_title(
+                        "Top 10 Feature Contributions",
+                        fontsize=12,
+                        fontweight="bold"
+                    )
+
                     plt.tight_layout()
                     st.pyplot(fig)
-                    plt.close()
-                except Exception as e:
-                    st.info(f"SHAP explanation generated using standard linear feature importance. ({str(e)})")
+                    plt.close(fig)
+
+                    st.caption(
+                        "SHAP values explain contributions to the model "
+                        "output. They do not establish causation."
+                    )
+
+                except Exception as shap_error:
+                    st.info(
+                        "The prediction succeeded, but the SHAP "
+                        f"explanation could not be generated: {shap_error}"
+                    )
 
             except Exception as ex:
                 st.error(f"Error making prediction: {str(ex)}")
